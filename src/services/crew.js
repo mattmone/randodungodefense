@@ -85,13 +85,11 @@ export class Crew extends Initializeable {
         const choices = Array.from(points % 2 === 0 && favored ? favored : possibilities.keys());
         const chosen = oneOf(choices);
         const currentLevel = possibilities.get(chosen).level;
-        if (currentLevel <= max) {
-          possibilities.set(chosen, {
-            ...possibilities.get(chosen),
-            level: currentLevel + 1,
-          });
-          points--;
-        }
+        possibilities.set(chosen, {
+          ...possibilities.get(chosen),
+          level: currentLevel + 1,
+        });
+        points--;
       }
     };
     return Promise.all(
@@ -172,54 +170,39 @@ export class Crew extends Initializeable {
           ],
           ['magic', { level: 1, progression: 0 }],
         ]);
-        const focus = oneOf(['stealth', 'magic', 'melee', 'ranged']);
+        const focus = oneOf(['support', 'destruction', 'crossbow', 'longbow', 'shortbow']);
         const favoredStats = [];
-        if (focus === 'stealth') {
-          favoredStats.push('speed', 'dexterity', 'intellect');
-        } else if (focus === 'magic') {
+        if (focus === 'support') {
           favoredStats.push('magic', 'intellect', 'dexterity');
-        } else if (focus === 'melee') {
+        } else if(focus === 'destruction') {
+          favoredStats.push('magic', 'intellect', 'constitution')
+        } else if (focus === 'crossbow') {
           favoredStats.push('strength', 'constitution', 'dexterity');
-        } else if (focus === 'ranged') {
+        } else if (focus === 'longbow') {
           favoredStats.push('dexterity', 'speed', 'strength');
+        } else if (focus === 'shortbow') {
+          favoredStats.push('dexterity', 'strength', 'intellect')
         }
         const skills = [];
-        if (focus === 'stealth') {
+        if (focus === 'support') {
           skills.push(
-            ['athletics', { level: 0, progression: 0 }],
-            ['acrobatics', { level: 0, progression: 0 }],
-            ['flanking', { level: 0, progression: 0 }],
-            ['defend', { level: 0, progression: 0 }],
-            [oneOf(['sword', 'knife', 'crossbow']), { level: 0, progression: 0 }],
+            ['arcana: support', { level: 0, progression: 0 }]
           );
-        } else if (focus === 'magic') {
+        } else if (focus === 'destruction') {
           skills.push(
             ['arcana: destruction', { level: 0, progression: 0 }],
-            ['arcana: healing', { level: 0, progression: 0 }],
-            ['arcana: support', { level: 0, progression: 0 }],
-            ['defend', { level: 0, progression: 0 }],
-            ['staff', { level: 0, progression: 0 }],
           );
-        } else if (focus === 'melee') {
-          const weapons = ['sword', 'axe', 'knife', 'polearm', 'unarmed'];
-          const weapon1 = oneOf(weapons);
-          const weapon2 = oneOf(weapons.filter(weapon => weapon !== weapon1));
+        } else if (focus === 'crossbow') {
           skills.push(
-            ['athletics', { level: 0, progression: 0 }],
-            ['acrobatics', { level: 0, progression: 0 }],
-            ['defend', { level: 0, progression: 0 }],
-            [weapon1, { level: 0, progression: 0 }],
-            [weapon2, { level: 0, progression: 0 }],
+            ['crossbow', { level: 0, progression: 0 }]
           );
-        } else if (focus === 'ranged') {
-          const weapons = ['shortbow', 'longbow', 'crossbow'];
-          const weapon1 = oneOf(weapons);
+        } else if (focus === 'longbow') {
           skills.push(
-            ['athletics', { level: 0, progression: 0 }],
-            ['acrobatics', { level: 0, progression: 0 }],
-            ['flanking', { level: 0, progression: 0 }],
-            ['defend', { level: 0, progression: 0 }],
-            [weapon1, { level: 0, progression: 0 }],
+            ['longbow', { level: 0, progression: 0 }]
+          );
+        } else if (focus === 'shortbow') {
+          skills.push(
+            ['shortbow', { level: 0, progression: 0 }]
           );
         }
 
