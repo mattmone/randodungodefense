@@ -194,7 +194,7 @@ class GameMap extends EventTarget{
 		return characters.members.filter(({dead}) => !dead).map(({ id }) => id);
 	}
 
-	generateMap({ type = "largeRoad", width = 24, height = 12 }) {
+	generateMap({ type = "largeRoad", width = 36, height = 18 }) {
 		const map = makeMap({ type, width, height });
 		this.maps.push(map);
 		const mapName = `map-${crypto.randomUUID()}`;
